@@ -10,14 +10,13 @@ import { FaArrowRight } from "react-icons/fa6";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { TbBasketExclamation } from "react-icons/tb";
 import React from "react";
-import { RootState } from "@/lib/store";
-import { useAppSelector } from "@/lib/hooks/redux";
+import { useCartStore } from "@/lib/stores/cartStore";
 import Link from "next/link";
 
 export default function CartPage() {
-  const { cart, totalPrice, adjustedTotalPrice } = useAppSelector(
-    (state: RootState) => state.carts
-  );
+  const cart = useCartStore((state) => state.cart);
+  const totalPrice = useCartStore((state) => state.totalPrice);
+  const adjustedTotalPrice = useCartStore((state) => state.adjustedTotalPrice);
 
   return (
     <main className="pb-20">

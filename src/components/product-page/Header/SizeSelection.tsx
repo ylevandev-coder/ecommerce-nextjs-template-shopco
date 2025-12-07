@@ -1,16 +1,12 @@
 "use client";
 
-import { setSizeSelection } from "@/lib/features/products/productsSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks/redux";
-import { RootState } from "@/lib/store";
+import { useProductStore } from "@/lib/stores/productStore";
 import { cn } from "@/lib/utils";
 import React from "react";
 
 const SizeSelection = () => {
-  const { sizeSelection } = useAppSelector(
-    (state: RootState) => state.products
-  );
-  const dispatch = useAppDispatch();
+  const sizeSelection = useProductStore((state) => state.sizeSelection);
+  const setSizeSelection = useProductStore((state) => state.setSizeSelection);
 
   return (
     <div className="flex flex-col">
@@ -26,7 +22,7 @@ const SizeSelection = () => {
               "bg-[#F0F0F0] flex items-center justify-center px-5 lg:px-6 py-2.5 lg:py-3 text-sm lg:text-base rounded-full m-1 lg:m-0 max-h-[46px]",
               sizeSelection === size && "bg-black font-medium text-white",
             ])}
-            onClick={() => dispatch(setSizeSelection(size))}
+            onClick={() => setSizeSelection(size)}
           >
             {size}
           </button>
