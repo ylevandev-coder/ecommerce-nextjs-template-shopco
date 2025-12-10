@@ -1,14 +1,21 @@
-export type Discount = {
-  amount: number;
-  percentage: number;
-};
+import { ProductCategory } from "./productCategory";
 
 export type Product = {
   id: number;
-  title: string;
-  srcUrl: string;
-  gallery?: string[];
+  name: string;
+  slug: string;
+  description: string;
+  sku: string;
+  regularPrice: string;
+  salePrice: number;
   price: number;
-  discount: Discount;
-  rating: number;
+  stock: number;
+  status: string;
+  images: {
+    id: number;
+    url: string;
+  }[];
+  category?: ProductCategory;
+  createdAt: string;
+  updatedAt: string;
 };
