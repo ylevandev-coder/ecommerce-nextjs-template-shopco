@@ -12,7 +12,7 @@ export interface GetProductsParams {
 }
 
 export const getProducts = async (params?: GetProductsParams) => {
-  const response = await client.fetch(`/strapi-ecommerce/products`, {
+  const response = await client.fetch(`/products`, {
     method: "GET",
     body: JSON.stringify(params),
   });
@@ -24,7 +24,7 @@ export const getProducts = async (params?: GetProductsParams) => {
 export const getProduct = async (id: string, populate?: string) => {
   const params = populate ? { populate } : undefined;
   const response = await client
-    .collection("strapi-ecommerce/products")
+    .collection("products")
     .findOne(id, params);
 
   return response;

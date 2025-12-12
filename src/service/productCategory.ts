@@ -12,7 +12,7 @@ export interface GetProductCategoriesParams {
 
 export const getProductCategories = async (params?: GetProductCategoriesParams) => {
   const response = await client
-    .collection("strapi-ecommerce/product-categories")
+    .collection("product-categories")
     .find(params);
 
   return response;
@@ -21,7 +21,7 @@ export const getProductCategories = async (params?: GetProductCategoriesParams) 
 export const getProductCategory = async (id: string, populate?: string) => {
   const params = populate ? { populate } : undefined;
   const response = await client
-    .collection("strapi-ecommerce/product-categories")
+    .collection("product-categories")
     .findOne(id, params);
 
   return response;
