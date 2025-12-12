@@ -12,13 +12,13 @@ export interface GetProductsParams {
 }
 
 export const getProducts = async (params?: GetProductsParams) => {
-  const response = await client.fetch(`/products`, {
+  const response = await client.fetch("/products", {
     method: "GET",
-    body: JSON.stringify(params),
+    params,
   });
 
   const { data } = await response.json();
-  return data as unknown as Product[];
+  return data;
 };
 
 export const getProduct = async (id: string, populate?: string) => {
