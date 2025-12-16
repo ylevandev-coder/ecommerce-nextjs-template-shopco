@@ -1,4 +1,6 @@
-const BASE_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337/api';
+import { useAuthStore } from "@/lib/stores/authStore";
+
+export const API_BASE_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337/api';
 
 /**
  * Builds a query string from parameters object
@@ -47,16 +49,21 @@ export async function strapiFetch(
     method?: string;
     params?: Record<string, any>;
     body?: any;
+    token?: string;
   } = {}
 ): Promise<Response> {
-  const { method = 'GET', params, body } = options;
+  const { method = 'GET', params, body, token } = options;
   
-  const url = `${BASE_URL}${endpoint}${buildQueryString(params)}`;
+  const url = `${API_BASE_URL}${endpoint}${buildQueryString(params)}`;
+
+  // Get token from Zustand store if not explicitly provided
+  const _token = token || (typeof window !== 'undefined' ? useAuthStore.getState().jwt : null);
   
   const fetchOptions: RequestInit = {
     method,
     headers: {
       'Content-Type': 'application/json',
+      ...(_token && { Authorization: `Bearer ${_token}` }),
     },
   };
   
