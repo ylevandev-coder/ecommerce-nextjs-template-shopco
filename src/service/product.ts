@@ -1,5 +1,4 @@
 import client from "./core";
-import { Product } from "@/types/product.types";
 
 export interface GetProductsParams {
   filters?: Record<string, any>;
@@ -18,7 +17,7 @@ export const getProducts = async (params?: GetProductsParams) => {
   });
 
   const { data } = await response.json();
-  return data;
+  return data || [];
 };
 
 export const getProduct = async (id: string, populate?: string) => {
