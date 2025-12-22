@@ -6,7 +6,7 @@ export type Product = {
   slug: string;
   description: string;
   sku: string;
-  regularPrice: string;
+  regularPrice: number;
   salePrice: number;
   price: number;
   stock: number;

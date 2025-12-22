@@ -52,7 +52,8 @@ export default function CartPage() {
                     <span className="md:text-xl text-black/60">Subtotal</span>
                     <span className="md:text-xl font-bold">${totalPrice}</span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  {/* Discount */}
+                  {/* <div className="flex items-center justify-between">
                     <span className="md:text-xl text-black/60">
                       Discount (-
                       {Math.round(
@@ -63,7 +64,7 @@ export default function CartPage() {
                     <span className="md:text-xl font-bold text-red-600">
                       -${Math.round(totalPrice - adjustedTotalPrice)}
                     </span>
-                  </div>
+                  </div> */}
                   <div className="flex items-center justify-between">
                     <span className="md:text-xl text-black/60">
                       Delivery Fee

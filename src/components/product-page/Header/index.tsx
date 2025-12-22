@@ -22,9 +22,9 @@ const Header = ({ data }: { data: Product }) => {
               "text-2xl md:text-[40px] md:leading-[40px] mb-3 md:mb-3.5 capitalize",
             ])}
           >
-            {data.title}
+            {data.name}
           </h1>
-          <div className="flex items-center mb-3 sm:mb-3.5">
+          {/* <div className="flex items-center mb-3 sm:mb-3.5">
             <Rating
               initialValue={data.rating}
               allowFraction
@@ -75,15 +75,15 @@ const Header = ({ data }: { data: Product }) => {
                 </span>
               )
             )}
-          </div>
+          </div> */}
           <p className="text-sm sm:text-base text-black/60 mb-5">
             This graphic t-shirt which is perfect for any occasion. Crafted from
             a soft and breathable fabric, it offers superior comfort and style.
           </p>
-          <hr className="h-[1px] border-t-black/10 mb-5" />
+          {/* <hr className="h-[1px] border-t-black/10 mb-5" />
           <ColorSelection />
           <hr className="h-[1px] border-t-black/10 my-5" />
-          <SizeSelection />
+          <SizeSelection /> */}
           <hr className="hidden md:block h-[1px] border-t-black/10 my-5" />
           <AddToCardSection data={data} />
         </div>

@@ -1,20 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { compareArrays } from "@/lib/utils";
-import { Discount } from "@/types/product.types";
-
-const calcAdjustedTotalPrice = (
-  data: CartItem,
-  quantity?: number
-): number => {
-  const adjustedPrice =
-    data.discount.percentage > 0
-      ? Math.round(data.price - (data.price * data.discount.percentage) / 100)
-      : data.discount.amount > 0
-      ? Math.round(data.price - data.discount.amount)
-      : data.price;
-  return adjustedPrice * (quantity ? quantity : data.quantity);
-};
 
 export type RemoveCartItem = {
   id: number;
@@ -25,10 +11,11 @@ export type CartItem = {
   id: number;
   name: string;
   srcUrl: string;
-  price: number;
+  salePrice: number;
+  regularPrice: number;
   attributes: string[];
-  discount: Discount;
   quantity: number;
+  slug: string;
 };
 
 export type Cart = {
@@ -57,16 +44,14 @@ export const useCartStore = create<CartState>()(
         set((state) => {
           // if cart is empty then add
           if (state.cart === null) {
-            const newTotalPrice = state.totalPrice + item.price * item.quantity;
-            const newAdjustedTotalPrice =
-              state.adjustedTotalPrice + calcAdjustedTotalPrice(item);
+            const price = item.salePrice || item.regularPrice;
+            const newTotalPrice = state.totalPrice + price * item.quantity;
             return {
               cart: {
                 items: [item],
                 totalQuantities: item.quantity,
               },
               totalPrice: newTotalPrice,
-              adjustedTotalPrice: newAdjustedTotalPrice,
             };
           }
 
@@ -95,9 +80,8 @@ export const useCartStore = create<CartState>()(
               };
             });
 
-            const newTotalPrice = state.totalPrice + item.price * item.quantity;
-            const newAdjustedTotalPrice =
-              state.adjustedTotalPrice + calcAdjustedTotalPrice(item);
+            const price = isItemInCart.salePrice || isItemInCart.regularPrice;
+            const newTotalPrice = state.totalPrice + price * item.quantity;
 
             return {
               cart: {
@@ -106,13 +90,11 @@ export const useCartStore = create<CartState>()(
                 totalQuantities: state.cart.totalQuantities + item.quantity,
               },
               totalPrice: newTotalPrice,
-              adjustedTotalPrice: newAdjustedTotalPrice,
             };
           }
 
-          const newTotalPrice = state.totalPrice + item.price * item.quantity;
-          const newAdjustedTotalPrice =
-            state.adjustedTotalPrice + calcAdjustedTotalPrice(item);
+          const price = item.salePrice || item.regularPrice;
+          const newTotalPrice = state.totalPrice + price * item.quantity;
 
           return {
             cart: {
@@ -121,7 +103,6 @@ export const useCartStore = create<CartState>()(
               totalQuantities: state.cart.totalQuantities + item.quantity,
             },
             totalPrice: newTotalPrice,
-            adjustedTotalPrice: newAdjustedTotalPrice,
           };
         }),
       removeCartItem: (item) =>
@@ -155,9 +136,8 @@ export const useCartStore = create<CartState>()(
               })
               .filter((item) => item.quantity > 0);
 
-            const newTotalPrice = state.totalPrice - isItemInCart.price * 1;
-            const newAdjustedTotalPrice =
-              state.adjustedTotalPrice - calcAdjustedTotalPrice(isItemInCart, 1);
+            const price = isItemInCart.salePrice || isItemInCart.regularPrice;
+            const newTotalPrice = state.totalPrice - price * 1;
 
             return {
               cart: {
@@ -166,7 +146,6 @@ export const useCartStore = create<CartState>()(
                 totalQuantities: state.cart.totalQuantities - 1,
               },
               totalPrice: newTotalPrice,
-              adjustedTotalPrice: newAdjustedTotalPrice,
             };
           }
 
@@ -191,20 +170,18 @@ export const useCartStore = create<CartState>()(
               : pItem.id !== item.id;
           });
 
+          const price = isItemInCart.salePrice || isItemInCart.regularPrice;
           const newTotalPrice =
-            state.totalPrice - isItemInCart.price * isItemInCart.quantity;
-          const newAdjustedTotalPrice =
-            state.adjustedTotalPrice -
-            calcAdjustedTotalPrice(isItemInCart, isItemInCart.quantity);
+            state.totalPrice - price * isItemInCart.quantity;
 
           return {
             cart: {
               ...state.cart,
               items: filteredItems,
-              totalQuantities: state.cart.totalQuantities - isItemInCart.quantity,
+              totalQuantities:
+                state.cart.totalQuantities - isItemInCart.quantity,
             },
             totalPrice: newTotalPrice,
-            adjustedTotalPrice: newAdjustedTotalPrice,
           };
         }),
     }),
@@ -214,4 +191,3 @@ export const useCartStore = create<CartState>()(
     }
   )
 );
-
